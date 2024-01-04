@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QuoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Method GET digunakan untuk mengambil/membaca data
+// Method POST digunakan untuk menambahkan data
+// Method DELETE digunakan untuk menghapus data
+// Method PUT/PATCH digunakan untuk mengupdate data
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/hello', function () {
+    return response()->json([
+        'test' => 'hello'
+    ], 200);
+});
+
+Route::apiResource('/quote', QuoteController::class);
