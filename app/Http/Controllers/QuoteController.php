@@ -41,7 +41,8 @@ class QuoteController extends Controller
      */
     public function update(UpdateQuoteRequest $request, Quote $quote)
     {
-        //
+        $quote->update($request->validated());
+        return new QuoteResource($quote);
     }
 
     /**
