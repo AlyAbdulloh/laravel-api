@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\LoginResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 class ApiAuthController extends Controller
 {
     //
-    function login(LoginRequest $request)
+    public function login(LoginRequest $request)
     {
         // // check if user exists
         // $user = User::where('email', $request->email)->first();
@@ -50,7 +51,27 @@ class ApiAuthController extends Controller
         }
     }
 
-    function logout(Request $request)
+    public function register(RegisterRequest $request)
+    {
+        // save user to table user
+        $user = User::create(
+            [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]
+        );
+
+        //make token
+        $token = $user->createToken('token')->plainTextToken;
+
+        //response
+        return new LoginResource([
+            'token' => $token,
+        ]);
+    }
+
+    public function logout(Request $request)
     {
         // $request->user()->currentAccessToken()->delete();
 
